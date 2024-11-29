@@ -1,52 +1,33 @@
-import { signIn, signUp } from '@/lib/auth-client';
+import React from 'react';
+import { redirect } from 'next/navigation';
 
-import Form from 'next/form';
+import { auth, signOut } from '@/app/lib/auth';
+import { AuthError } from 'next-auth';
 
-export default function Home() {
-  const loginHandler = async (formData: FormData) => {
-    'use server';
-    // signIn()
-  };
-
-  const signUpHandler = async (formData: FormData) => {
-    'use server';
-
-    const email = formData.get('email')?.toString() ?? '';
-    const password = formData.get('password')?.toString() ?? '';
-    console.log(email, ':::', password);
-    const { data, error } = await signUp.email({
-      email, password, name: 'Kush',
-    }, {
-      onSuccess: (ctx) => {
-        alert('signed up')
-      }
-    })
-  };
-
-  return (
-    <div>
-      <Form action={loginHandler}>
-        <label>
-          Email:
-          <input id='email' name='email' />
-        </label>
-        <label>
-          Password:
-          <input id='password' name='password' type='password' />
-        </label>
-        <button type='submit'>Log In</button>
-      </Form>
-      <Form action={signUpHandler}>
-        <label>
-          Email:
-          <input id='email' name='email' />
-        </label>
-        <label>
-          Password:
-          <input id='password' name='password' type='password' />
-        </label>
-        <button type='submit'>Sign Up</button>
-      </Form>
-    </div>
-  );
+export default async function Home() {
+  const session = await auth()
+  if (session) {
+    return (
+      <form action={async () => {
+        'use server'
+        try {
+          await signOut()
+        } catch (err) {
+          if (err instanceof AuthError) {
+            console.error(err)
+            return redirect(`/api/auth/error?error=${err.type}`)
+          }
+          throw err;
+        }
+      }}>
+        <p>Logged In</p>
+        <button type='submit'
+          className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+          Sign Out
+        </button>
+      </form>
+    )
+  } else {
+    return redirect('/auth/login')
+  }
 }
