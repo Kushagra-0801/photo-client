@@ -3,11 +3,16 @@ import { redirect } from 'next/navigation';
 
 import { auth, signOut } from '@/app/lib/auth';
 import { AuthError } from 'next-auth';
+import Navbar from '@/components/Navbar';
 
 export default async function Home() {
   const session = await auth()
-  if (session) {
-    return (
+  if (!session) {
+    return redirect('/auth/login')
+  }
+  return (
+    <div>
+      <Navbar />
       <form action={async () => {
         'use server'
         try {
@@ -26,8 +31,6 @@ export default async function Home() {
           Sign Out
         </button>
       </form>
-    )
-  } else {
-    return redirect('/auth/login')
-  }
+    </div>
+  )
 }
