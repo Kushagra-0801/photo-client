@@ -1,8 +1,22 @@
 import React, { forwardRef } from 'react'
-import Image from 'next/image'
+import Link from 'next/link';
 
 import type { ImageData } from "@/app/lib/definitions";
 
 export default forwardRef<HTMLImageElement, ImageData>(function ImageCard(props, ref) {
-  return (<Image src={props.src} alt={''} title={props.id} width={300} height={300} ref={ref} />)
+  return (
+    <Link href={`/image/${props.id}`}>
+      <div className="max-w-sm rounded overflow-hidden shadow-lg">
+        <img className='w-full' src={props.src} alt='' title={props.id} ref={ref} />
+        <div className="px-6 py-4">
+          <div className="font-bold text-xl mb-2">{props.id}</div>
+        </div>
+        <div className="px-6 pt-4 pb-2">
+          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
+          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
+          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
+        </div>
+      </div>
+    </Link>
+  )
 })
