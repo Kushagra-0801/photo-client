@@ -6,6 +6,7 @@ import { signOut } from 'next-auth/react';
 
 import Logo from '@/public/android-chrome-512x512.png'
 import Avatar from '@/public/stock-profile.jpg'
+import Container from '@/components/Container'
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -17,7 +18,7 @@ export default function Navbar() {
   )
   return (
     <nav className='bg-gray-800 sticky top-0'>
-      <div className='mx-auto max-w-6xl px-2 sm:px-6 lg:px-8'>
+      <Container>
         <div className='flex h-16 items-center justify-between'>
           <div className="flex items-center sm:hidden">
             <button
@@ -51,8 +52,7 @@ export default function Navbar() {
             <SignoutButton />
           </div>
         </div>
-      </div>
-      <div className={isMobileMenuOpen ? "sm:hidden" : "hidden sm:hidden"} id="mobile-menu">
+      </Container><div className={isMobileMenuOpen ? "sm:hidden" : "hidden sm:hidden"} id="mobile-menu">
         <div className="space-y-1 px-2 pb-3 pt-2">
           <SearchButton />
           <UploadButton />
