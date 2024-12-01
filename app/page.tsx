@@ -12,6 +12,7 @@ export default async function Home() {
   }
   return (
     <Container>
+      {JSON.stringify(session)}
       <ImageGrid />
     </Container>
   )

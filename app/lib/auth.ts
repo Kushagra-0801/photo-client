@@ -1,6 +1,9 @@
+import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import NextAuth from "next-auth"
 import type { Provider } from "next-auth/providers";
 import GitHub from "next-auth/providers/github"
+
+import DbClient from '@/app/lib/db'
 
 const providers: Provider[] = [GitHub];
 
@@ -16,6 +19,7 @@ export const providerMap = providers
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: providers,
+  adapter: MongoDBAdapter(DbClient),
   pages: {
     signIn: '/auth/login',
   }
