@@ -27,3 +27,21 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 export default client
+
+// const client = new MongoClient(process.env.DB_URL ?? '')
+
+// await client.connect()
+
+// const dbName = 'local'
+// const collectionName = 'photo'
+
+// const database = client.db(dbName)
+// const collection = database.collection(collectionName)
+
+// export function getUserData(id: string) {
+//   collection.findOne({
+//     userId: id
+//   })
+// }
+
+// // export function getOrCreateUserData(user: )

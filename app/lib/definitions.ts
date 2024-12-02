@@ -1,12 +1,18 @@
 export type ImageData = {
-  id: string
-  src: string
-  tags: string[]
+  name: string,
+  type: string,
+  url: string,
+  tags: string[],
 }
 
-export type MongoSchema = {
+// export type MongoSchema = {
+//   userId: string
+//   name: string
+//   photos: ImageData[]
+//   tag_heirarchy: undefined
+// }
+
+export type Library = {
   userId: string
-  name: string
-  photos: ImageData[]
-  tag_heirarchy: undefined
+  files: ImageData[]
 }

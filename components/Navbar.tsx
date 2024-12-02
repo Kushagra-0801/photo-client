@@ -1,16 +1,25 @@
 'use client';
 
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useRef } from 'react'
 import Image from 'next/image'
 import { signOut } from 'next-auth/react';
 
 import Logo from '@/public/android-chrome-512x512.png'
 import Avatar from '@/public/stock-profile.jpg'
 import Container from '@/components/Container'
+import UploadPopup from '@/components/UploadPopup';
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const toggleMobileMenu = useCallback(() => setIsMobileMenuOpen(cs => !cs), []);
+  const modalRef = useRef<HTMLDialogElement | null>(null)
+  const openModal = useCallback(() => {
+    if (modalRef?.current) {
+      modalRef.current.showModal()
+    }
+  }, [modalRef]);
+
+
   const tagMgmtLink = (<a href="#"
     className="inline-block rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
     Tag Management
@@ -41,7 +50,7 @@ export default function Navbar() {
             <div className='hidden sm:ml-6 sm:block'>
               <div className="flex space-x-4">
                 <SearchButton />
-                <UploadButton />
+                <UploadButton onClick={openModal} />
                 {tagMgmtLink}
               </div>
             </div>
@@ -52,14 +61,16 @@ export default function Navbar() {
             <SignoutButton />
           </div>
         </div>
-      </Container><div className={isMobileMenuOpen ? "sm:hidden" : "hidden sm:hidden"} id="mobile-menu">
+      </Container>
+      <div className={isMobileMenuOpen ? "sm:hidden" : "hidden sm:hidden"} id="mobile-menu">
         <div className="space-y-1 px-2 pb-3 pt-2">
           <SearchButton />
-          <UploadButton />
+          <UploadButton onClick={openModal} />
           {tagMgmtLink}
           <SignoutButton mobile={true} />
         </div>
       </div>
+      <UploadPopup ref={modalRef} />
     </nav>
   )
 }
@@ -75,10 +86,10 @@ function SearchButton() {
   )
 }
 
-function UploadButton() {
+function UploadButton({ onClick }: { onClick: React.MouseEventHandler<HTMLButtonElement> }) {
   return (
     <button
-      type='button' aria-label='upload'
+      type='button' aria-label='upload' onClick={onClick}
       className='flex items-center rounded-md justify-between px-3 py-2 font-semibold text-white text-sm bg-yellow-700 hover:bg-yellow-600'>
       Upload
     </button>
